@@ -41,4 +41,4 @@ def mail():
         st.success("Mail sent successfully!")
 
 
-st.button("Enviar 📮", on_click=mail, )
+st.button("Send 📮", on_click=mail)
