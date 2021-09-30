@@ -1,6 +1,4 @@
 import streamlit as st
-from streamlit_ace import st_ace
-import streamlit_ace
 import time
 from mailer import Mailer
 
