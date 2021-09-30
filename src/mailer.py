@@ -18,7 +18,7 @@ class Mailer:
         # server is the server to be used and server_details() is used to get the details
         self.server = self.server_details(server)
 
-    def send_mail(self, to, subject, body, bcc=None, attachment=None, html=None):
+    def send_mail(self, to, subject, body, bcc=None, attachments=None, is_html=False):
         """ This function sends an email to the specified recipient.
 
         Parameters:
@@ -40,22 +40,23 @@ class Mailer:
             message["Bcc"] = bcc
 
         # if html is available, add it to the message
-        if html is not None:
-            message.attach(MIMEText(body, 'text'))
-            message.attach(MIMEText(html, 'html'))
+        if is_html:
+            message.attach(MIMEText(body, 'html'))
         else:
             message.attach(MIMEText(body, 'text'))
 
         # if attachment is available, add it to the message
-        if attachment is not None:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())             # Read the file
-            email.encoders.encode_base64(part)              # Encode the file
-            part.add_header(
-                "Content-Disposition",
-                "attachment; filename=%s" % attachment.filename,
-            )                                            # Add the header
-            message.attach(part)
+        if attachments is not None:
+            for files in attachments:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(files.read())             # Read the file
+                email.encoders.encode_base64(
+                    part)              # Encode the file
+                part.add_header(
+                    "Content-Disposition",
+                    "attachment; filename=%s" % files.name,
+                )                                            # Add the header
+                message.attach(part)
 
         context = ssl.create_default_context()              # Create the SSL context
         # connect to the server
