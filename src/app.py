@@ -1,4 +1,5 @@
 import streamlit as st
+import markdown
 import time
 from mailer import Mailer
 
@@ -25,9 +26,14 @@ st.markdown("""*****
 # What's the message? 🔥""")
 
 subject = st.text_input("Subject:")
-body = st.text_area("Body:", height=100)
-is_html = st.checkbox("Includes HTML")
-
+st.info(
+    """We support Markdown 🎉 If you are new to Markdown check this [Guide](https://www.markdownguide.org/basic-syntax/).""")
+col1, col2 = st.columns(2)
+body = col1.text_area("Body:", height=300)
+col2.markdown(st.session_state.get("body", body), unsafe_allow_html=True)
+view_html = st.checkbox("View Raw HTML")
+if view_html:
+    st.code(markdown.markdown(st.session_state.get("body", body)))
 attachments = st.file_uploader("Attachments:", accept_multiple_files=True)
 
 mailer = Mailer(mailid, passwrd, server.lower())
@@ -35,7 +41,7 @@ mailer = Mailer(mailid, passwrd, server.lower())
 
 def mail():
     mailer.send_mail(to=recipients, bcc=bcc, subject=subject,
-                     body=body, is_html=is_html, attachments=attachments)
+                     body=body, attachments=attachments)
     with st.spinner("Sending..."):
         time.sleep(5)
         st.success("Mail sent successfully!")

@@ -18,7 +18,7 @@ class Mailer:
         # server is the server to be used and server_details() is used to get the details
         self.server = self.server_details(server)
 
-    def send_mail(self, to, subject, body, bcc=None, attachments=None, is_html=False):
+    def send_mail(self, to, subject, body, bcc=None, attachments=None):
         """ This function sends an email to the specified recipient.
 
         Parameters:
@@ -27,7 +27,6 @@ class Mailer:
         body (str): The body of the email.
         bcc (str): The bcc of the email.
         attachment (file): The attachment of the email.
-        html (str): Whether the email is html or not.
 
         """
         # Create the message
@@ -40,10 +39,7 @@ class Mailer:
             message["Bcc"] = bcc
 
         # if html is available, add it to the message
-        if is_html:
-            message.attach(MIMEText(body, 'html'))
-        else:
-            message.attach(MIMEText(body, 'text'))
+        message.attach(MIMEText(body, 'html'))
 
         # if attachment is available, add it to the message
         if attachments is not None:
