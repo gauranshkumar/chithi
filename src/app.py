@@ -1,15 +1,36 @@
 # Imports
+<<<<<<< HEAD
 import pandas as pd
 import streamlit as st
 import markdown
 import mimetypes
 
+=======
+import streamlit as st
+import markdown
+>>>>>>> 31963c2eef02ca384c1efb486a4246cffbd4c1ba
 # from streamlit_ace import st_ace, LANGUAGES, THEMES
 import time
 from mailer import Mailer
 from info import get_server_info
+<<<<<<< HEAD
 
 
+=======
+
+# Utility Functions
+
+
+def mail():
+    '''Function to send the mail'''
+    mailer.send_mail(to=recipients, bcc=bcc, subject=subject,
+                     body=body, attachments=attachments)
+    with st.spinner("Sending..."):
+        time.sleep(5)
+        st.success("Mail sent successfully!")
+
+
+>>>>>>> 31963c2eef02ca384c1efb486a4246cffbd4c1ba
 # Title for page
 st.title("✉️ CHITTHI")
 st.subheader("Send emails in Bulk ⚡")
@@ -69,6 +90,7 @@ if bccUpload is not None:
     elif bccUpload.type == mimetypes.types_map['.tsv']:
         df_bcc = pd.read_csv(bccUpload, delimiter="\t")
 
+<<<<<<< HEAD
     col = c2.selectbox("Select the Column of Mail Id's", df_bcc.columns)
     try:
         bcc = df_bcc[col].to_numpy().tolist()
@@ -76,6 +98,8 @@ if bccUpload is not None:
     except:
         c2.warning("Please select the correct column for Email Id.")
 
+=======
+>>>>>>> 31963c2eef02ca384c1efb486a4246cffbd4c1ba
 # TODO: Allow option for reading recipients from CSV/XSLX file
 
 
@@ -94,6 +118,7 @@ col2.markdown(st.session_state.get("body", body), unsafe_allow_html=True)
 view_html = st.checkbox("View Raw HTML")
 if view_html:
     st.code(markdown.markdown(st.session_state.get("body", body)))
+<<<<<<< HEAD
 
 st.info(
     """We support Markdown Editor 🎉 If you are new to Markdown check this [Guide](https://www.markdownguide.org/basic-syntax/).""")
@@ -104,11 +129,17 @@ attachments = st.file_uploader("Attachments:", accept_multiple_files=True)
 
 # Calling the core Mailer Class
 mailer = Mailer(mailid, passwrd, server.lower())
+=======
+
+st.info(
+    """We support Markdown Editor 🎉 If you are new to Markdown check this [Guide](https://www.markdownguide.org/basic-syntax/).""")
+>>>>>>> 31963c2eef02ca384c1efb486a4246cffbd4c1ba
 
 if cc == [""]:
     cc = None
 
 
+<<<<<<< HEAD
 def mail():
     '''Function to send the mail'''
     print(bcc)
@@ -118,6 +149,13 @@ def mail():
     with st.spinner("Sending..."):
         time.sleep(5)
         st.success("Mail sent successfully!")
+=======
+# Attachments options for mail
+attachments = st.file_uploader("Attachments:", accept_multiple_files=True)
+
+# Calling the core Mailer Class
+mailer = Mailer(mailid, passwrd, server.lower())
+>>>>>>> 31963c2eef02ca384c1efb486a4246cffbd4c1ba
 
 
 st.markdown("<br>", unsafe_allow_html=True)
