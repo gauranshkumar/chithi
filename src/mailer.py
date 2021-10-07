@@ -1,4 +1,5 @@
 # Imports
+from __future__ import print_function
 from email import message
 import smtplib
 import email
@@ -6,6 +7,23 @@ import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
+import streamlit as st
+
+# Scanning the files before uploading them
+
+import time
+import cloudmersive_virus_api_client
+from cloudmersive_virus_api_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: Apikey
+key='8b8683b1-e5c3-4627-9293-725d6d4a1b36'
+configuration = cloudmersive_virus_api_client.Configuration()
+configuration.api_key['Apikey'] = key
+
+# create an instance of the API class
+api_instance = cloudmersive_virus_api_client.ScanApi(cloudmersive_virus_api_client.ApiClient(configuration))
+
 
 # The Mailer class
 
@@ -50,15 +68,24 @@ class Mailer:
         # if attachment is available, add it to the message
         if attachments is not None:
             for files in attachments:
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(files.read())             # Read the file
-                email.encoders.encode_base64(
-                    part)              # Encode the file
-                part.add_header(
-                    "Content-Disposition",
-                    "attachment; filename=%s" % files.name,
-                )                                            # Add the header
-                message.attach(part)
+                try:
+                # Scan a file for viruses
+                    api_response = api_instance.scan_file(files)
+                    pprint(api_response)
+                except ApiException as e:
+                    print("Exception when calling ScanApi->scan_file: %s\n" % e)
+                
+                if(api_response.CleanResult=='true'):
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(files.read())             # Read the file
+                    email.encoders.encode_base64(part)              # Encode the file
+                    part.add_header(
+                        "Content-Disposition",
+                        "attachment; filename=%s" % files.name,
+                    )                                            # Add the header
+                    message.attach(part)
+                else:
+                    st.warning("Malicious File Found!")
 
         context = ssl.create_default_context()              # Create the SSL context
         # connect to the server
