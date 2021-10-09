@@ -92,8 +92,8 @@ col2.markdown(st.session_state.get("body", body), unsafe_allow_html=True)
 
 # If user wants to see the markdown eqivalent HTML Code
 view_html = st.checkbox("View Raw HTML")
+body = markdown.markdown(body)
 if view_html:
-    body = markdown.markdown(body)
     st.code(markdown.markdown(st.session_state.get("body", body)))
 
 st.info(
