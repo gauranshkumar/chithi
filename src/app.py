@@ -90,6 +90,9 @@ body = col1.text_area("Body:", height=300)
 # body = st_ace(language=LANGUAGES[90], theme=THEMES[13], auto_update=True)
 col2.markdown(st.session_state.get("body", body), unsafe_allow_html=True)
 
+# rendering the markdown to HTML
+body = markdown.markdown(body)
+
 # If user wants to see the markdown eqivalent HTML Code
 view_html = st.checkbox("View Raw HTML")
 if view_html:
