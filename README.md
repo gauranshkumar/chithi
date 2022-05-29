@@ -4,6 +4,10 @@
 
 The **Easiest**, **Secure** and **Free** Bulk Emailer!
 
+<video controls>
+<source type="video/mp4", src="assets/chithi_intro.mp4">
+</video>
+
 ## Installation
 
 > Build Locally
