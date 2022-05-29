@@ -1,7 +1,5 @@
 # Chithi 💌
 
----
-
 The **Easiest**, **Secure** and **Free** Bulk Emailer!
 
 https://user-images.githubusercontent.com/33760112/170854652-41786318-b797-421b-931b-a83a3fee140c.mp4
